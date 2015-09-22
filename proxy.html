@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <script>
+            (function() {
+                var parentOrigin = decodeURIComponent(location.hash.slice(1)),
+                    storageKey = 'tabMessagingStorage',
+                    lastSentMessageId;
+
+                window.addEventListener('storage', function (e) {
+                    if (e.key === storageKey) {
+                        if (e.newValue.substr(0, 4) !== lastSentMessageId) {
+                            window.parent.postMessage(e.newValue.slice(5), parentOrigin);
+                        }
+                    }
+                });
+
+                window.addEventListener('message', function(e) {
+                    if (e.origin === parentOrigin) {
+                        lastSentMessageId = generateId();
+                        localStorage.setItem(storageKey, [lastSentMessageId, e.data].join('-'));
+                    }
+                });
+
+                function generateId() {
+                    return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+                }
+            })();
+        </script>
+    </head>
+    <body></body>
+</html>
