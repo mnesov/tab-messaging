@@ -1,4 +1,4 @@
-if (!window.TabMessaging) { window.TabMessaging = (function () {
+window.TabMessaging = window.TabMessaging || (function () {
     var locationOrigin = [location.protocol, '//', location.host, location.port ? ':' + location.port : ''].join('');
 
     function TabMessaging(config) {
@@ -64,4 +64,3 @@ if (!window.TabMessaging) { window.TabMessaging = (function () {
     return TabMessaging;
 })();
 
-}
